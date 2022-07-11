@@ -22,7 +22,7 @@ class ClickatellClientTest extends TestCase
         parent::setUp();
 
         $this->httpClient = Mockery::mock(ClickatellHttp::class);
-        $this->clickatellClient = new ClickatellClient("api_key_1");
+        $this->clickatellClient = new ClickatellClient('api_key_1');
         $this->clickatellClient->clickatell = $this->httpClient;
     }
 

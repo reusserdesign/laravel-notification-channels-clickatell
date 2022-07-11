@@ -5,10 +5,10 @@ namespace NotificationChannels\Clickatell\Exceptions;
 class CouldNotSendNotification extends \Exception
 {
     /**
-     * @param string $message
-     * @param int $code
+     * @param  string  $message
+     * @param  int  $code
      *
-     * @return static
+     * @return  static
      */
     public static function serviceRespondedWithAnError($message, $code)
     {

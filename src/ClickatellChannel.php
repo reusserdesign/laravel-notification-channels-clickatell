@@ -11,7 +11,7 @@ class ClickatellChannel
     protected $clickatell;
 
     /**
-     * @param ClickatellClient $clickatell
+     * @param  ClickatellClient  $clickatell
      */
     public function __construct(ClickatellClient $clickatell)
     {
@@ -21,8 +21,8 @@ class ClickatellChannel
     /**
      * Send the given notification.
      *
-     * @param mixed $notifiable
-     * @param Notification $notification
+     * @param  mixed  $notifiable
+     * @param  Notification  $notification
      *
      * @throws CouldNotSendNotification
      */

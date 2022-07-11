@@ -45,7 +45,7 @@ class ClickatellMessageTest extends TestCase
     /** @test */
     public function it_can_construct_with_a_phone_number()
     {
-        $actual = ClickatellMessage::create("03210123456789");
+        $actual = ClickatellMessage::create('03210123456789');
 
         $this->assertEmpty($actual->getMessage());
         $this->assertEquals(['03210123456789'], $actual->getPhone());

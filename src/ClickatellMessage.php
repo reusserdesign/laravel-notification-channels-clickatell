@@ -13,8 +13,8 @@ class ClickatellMessage
     public $phone;
 
     /**
-     * @param mixeed $phone
-     * @param string $content
+     * @param  mixed  $phone
+     * @param  string  $content
      *
      * @return static
      */
@@ -28,8 +28,8 @@ class ClickatellMessage
     }
 
     /**
-     * @param string[] $phone
-     * @param string $content
+     * @param  string[]  $phone
+     * @param  string  $content
      */
     public function __construct(array $phone = [], string $content = '')
     {
@@ -40,11 +40,11 @@ class ClickatellMessage
     }
 
     /**
-     * @param string $content
+     * @param  string  $content
      *
-     * @return $this
+     * @return  $this
      */
-    public function setMessage(string $content)
+    public function setMessage(string $content): self
     {
         $this->content = $content;
 
@@ -54,17 +54,17 @@ class ClickatellMessage
     /**
      * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->content;
     }
 
     /**
-     * @param string $phone
+     * @param  string  $phone
      *
-     * @return $this
+     * @return  $this
      */
-    public function setPhone(array $phone) : self
+    public function setPhone(array $phone): self
     {
         $this->phone = $phone;
 
@@ -72,9 +72,9 @@ class ClickatellMessage
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getPhone() : array
+    public function getPhone(): array
     {
         return $this->phone;
     }

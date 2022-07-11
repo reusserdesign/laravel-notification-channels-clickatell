@@ -24,7 +24,7 @@ class ClickatellClient
     public $clickatell;
 
     /**
-     * @param ClickatellHttp $clickatellHttp
+     * @param  ClickatellHttp  $clickatellHttp
      */
     public function __construct(string $apiKey)
     {
@@ -32,7 +32,7 @@ class ClickatellClient
     }
 
     /**
-     * @param ClickatellMessage $message Clickatell Message object
+     * @param  ClickatellMessage  $message  Clickatell Message object
      */
     public function send(ClickatellMessage $message)
     {
@@ -45,7 +45,8 @@ class ClickatellClient
     }
 
     /**
-     * @param array $responses
+     * @param  array  $responses
+     * 
      * @throws CouldNotSendNotification
      */
     protected function handleProviderResponses(array $responses)

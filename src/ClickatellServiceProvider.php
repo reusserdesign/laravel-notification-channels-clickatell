@@ -16,6 +16,8 @@ class ClickatellServiceProvider extends ServiceProvider
             ->needs(ClickatellClient::class)
             ->give(function () {
                 $apiKey = config('services.clickatell.api_key');
+                $apiKey = config('services.clickatell.use_sms');
+                $apiKey = config('services.clickatell.use_whatsup');
 
                 return new ClickatellClient($apiKey);
             });

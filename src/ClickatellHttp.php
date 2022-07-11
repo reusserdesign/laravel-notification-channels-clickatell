@@ -10,12 +10,18 @@ class ClickatellHttp
     private $_apiKey = null;
     private $_curl = null;
 
+    private $_useSmsChannel = False;
+    private $_useWhatsUpChannel = False;
+
     private $_phoneNumbers = null;
     private $_message = null;
 
-    public function __construct($apiKey)
+    public function __construct(string $apiKey, bool $useSMS = false, bool $useWhatsUp = false)
     {
         $this->_apiKey = $apiKey;
+
+        $this->_useSmsChannel = $useSMS;
+        $this->_useWhatsUpChannel = $useWhatsUp;
 
         $this->_curl_init();
     }
@@ -35,8 +41,13 @@ class ClickatellHttp
         $messages = [];
 
         foreach ($this->_phoneNumbers as $phoneNumber) {
-            $messages[] = ['channel' => 'sms', 'to' => "$phoneNumber", 'content' => "$this->_message"];
-            $messages[] = ['channel' => 'whatsapp', 'to' => "$phoneNumber", 'content' => "$this->_message"];
+            if ($this->_useSmsChannel) {
+                $messages[] = ['channel' => 'sms', 'to' => "$phoneNumber", 'content' => "$this->_message"];
+            }
+
+            if ($this->_useWhatsUpChannel) {
+                $messages[] = ['channel' => 'whatsapp', 'to' => "$phoneNumber", 'content' => "$this->_message"];
+            }
         }
 
         return ['messages' => $messages];

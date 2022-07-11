@@ -4,6 +4,12 @@ namespace NotificationChannels\Clickatell;
 
 class ClickatellMessage
 {
+    /** @var bool */
+    public $useSmsChannel = False;
+
+    /** @var bool */
+    public $useWhatsUpChannel = False;
+
     /** @var string */
     public $content;
 
@@ -34,6 +40,22 @@ class ClickatellMessage
     {
         $this->phone = $phone;
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * @param  string  $content
+     * @return $this
+     */
+    public function setChannel(string $channel): self
+    {
+        if ($channel == "sms") {
+            $this->useSmsChannel = true;
+        }
+        if ($channel == "whatsup") {
+            $this->useWhatsUpChannel = true;
+        }
 
         return $this;
     }

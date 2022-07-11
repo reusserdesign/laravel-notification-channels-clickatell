@@ -38,11 +38,14 @@ composer require laravel-notification-channels/clickatell
 Add your Clickatell user, password and api identifier  to your `config/services.php`:
 
 ```php
+
 // config/services.php
 ...
 'clickatell' => [
-  'api_key' => env('CLICKATELL_API_KEY'),
-  'api_id' => env('CLICKATELL_API_ID')
+  'api_key' => env('CLICKATELL_API_KEY', null),
+  'api_id' => env('CLICKATELL_API_ID', null),
+  'use_sms' => env('CLICKATELL_USE_SMS', false),
+  'use_whatsup' => env('CLICKATELL_USE_WHATSUP', false)
 ],
 ...
 ```
@@ -66,6 +69,7 @@ class AccountApproved extends Notification
     public function toClickatell($notifiable)
     {
         return ClickatellMessage::create()
+            ->setChannel("sms")
             ->setNumber("Phone_Number")
             ->setMessage("Your {$notifiable->service} account was approved!");
     }

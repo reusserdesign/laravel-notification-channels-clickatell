@@ -35,8 +35,8 @@ class ClickatellHttp
         $messages = [];
 
         foreach ($this->_phoneNumbers as $phoneNumber) {
-            $messages[] += ['channel' => 'sms', 'to' => "$phoneNumber", 'content' => "$this->_message"];
-            $messages[] += ['channel' => 'whatsapp', 'to' => "$phoneNumber", 'content' => "$this->_message"];
+            $messages[] = ['channel' => 'sms', 'to' => "$phoneNumber", 'content' => "$this->_message"];
+            $messages[] = ['channel' => 'whatsapp', 'to' => "$phoneNumber", 'content' => "$this->_message"];
         }
 
         return ['messages' => $messages];

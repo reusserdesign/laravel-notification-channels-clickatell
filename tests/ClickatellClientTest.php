@@ -5,6 +5,7 @@ namespace NotificationChannels\Clickatell\Test;
 use Clickatell\Api\ClickatellHttp;
 use Mockery;
 use NotificationChannels\Clickatell\ClickatellClient;
+use NotificationChannels\Clickatell\ClickatellMessage;
 use NotificationChannels\Clickatell\Exceptions\CouldNotSendNotification;
 use PHPUnit\Framework\TestCase;
 
@@ -21,7 +22,8 @@ class ClickatellClientTest extends TestCase
         parent::setUp();
 
         $this->httpClient = Mockery::mock(ClickatellHttp::class);
-        $this->clickatellClient = new ClickatellClient($this->httpClient);
+        $this->clickatellClient = new ClickatellClient("api_key_1");
+        $this->clickatellClient->clickatell = $this->httpClient;
     }
 
     public function tearDown(): void
@@ -71,12 +73,17 @@ class ClickatellClientTest extends TestCase
         $to = ['27848118111'];
         $message = 'Hi there I am a message';
 
-        $this->httpClient->shouldReceive('sendMessage')
+        $messageObj = ClickatellMessage::create($to, $message);
+
+        $response = $this->getStubSuccessResponse($to);
+
+        $this->httpClient
+            ->shouldReceive('sendMessage')
             ->once()
             ->with($to, $message)
-            ->andReturn($this->getStubSuccessResponse($to));
+            ->andReturn($response);
 
-        $this->clickatellClient->send($to, $message);
+        $this->clickatellClient->send($messageObj);
     }
 
     /** @test */
@@ -85,15 +92,18 @@ class ClickatellClientTest extends TestCase
         $this->expectNotToPerformAssertions();
 
         $to = ['27848118111', '1234567890'];
-
         $message = 'Hi there I am a message to multiple receivers';
 
-        $this->httpClient->shouldReceive('sendMessage')
+        $messageObj = ClickatellMessage::create($to, $message);
+        $response = $this->getStubSuccessResponse($to);
+
+        $this->httpClient
+            ->shouldReceive('sendMessage')
             ->once()
             ->with($to, $message)
-            ->andReturn($this->getStubSuccessResponse($to));
+            ->andReturn($response);
 
-        $this->clickatellClient->send($to, $message);
+        $this->clickatellClient->send($messageObj);
     }
 
     /** @test */
@@ -105,12 +115,16 @@ class ClickatellClientTest extends TestCase
         $to = ['27848118']; // Bad number
         $message = 'Hi there I am a message that is bound to fail';
 
-        $this->httpClient->shouldReceive('sendMessage')
+        $messageObj = ClickatellMessage::create($to, $message);
+        $response = $this->getStubErrorResponse($to);
+
+        $this->httpClient
+            ->shouldReceive('sendMessage')
             ->once()
             ->with($to, $message)
-            ->andReturn($this->getStubErrorResponse($to));
+            ->andReturn($response);
 
-        $this->clickatellClient->send($to, $message);
+        $this->clickatellClient->send($messageObj);
     }
 
     /**

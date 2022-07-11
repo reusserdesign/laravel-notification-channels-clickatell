@@ -14,25 +14,41 @@ class ClickatellMessageTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->httpClient = \Mockery::mock(ClickatellHttp::class);
-        $this->clickatellMessage = new ClickatellMessage($this->httpClient);
+
+        $this->clickatellMessage = new ClickatellMessage();
     }
 
     /** @test */
     public function it_sets_a_clickatell_message()
     {
-        $this->assertInstanceOf(
-            ClickatellMessage::class,
-            $this->clickatellMessage
-        );
+        $this->assertInstanceOf(ClickatellMessage::class, $this->clickatellMessage);
     }
 
     /** @test */
-    public function it_can_construct_with_a_new_message()
+    public function it_can_construct_with_a_new_message_and_phone()
     {
-        $actual = ClickatellMessage::create('This is some content');
+        $actual = ClickatellMessage::create('phone_1', 'This is some content');
 
-        $this->assertEquals('This is some content', $actual->getContent());
+        $this->assertEquals(['phone_1'], $actual->getPhone());
+        $this->assertEquals('This is some content', $actual->getMessage());
+    }
+
+    /** @test */
+    public function it_can_construct_with_a_new_message_and_phones()
+    {
+        $actual = ClickatellMessage::create(['phone_1', 'phone_2'], 'This is some content');
+
+        $this->assertEquals(['phone_1', 'phone_2'], $actual->getPhone());
+        $this->assertEquals('This is some content', $actual->getMessage());
+    }
+
+    /** @test */
+    public function it_can_construct_with_a_phone_number()
+    {
+        $actual = ClickatellMessage::create("03210123456789");
+
+        $this->assertEmpty($actual->getMessage());
+        $this->assertEquals(['03210123456789'], $actual->getPhone());
     }
 
     /** @test */
@@ -40,10 +56,22 @@ class ClickatellMessageTest extends TestCase
     {
         $actual = ClickatellMessage::create();
 
-        $this->assertEmpty($actual->getContent());
+        $this->assertEmpty($actual->getMessage());
 
-        $actual->content('Hello');
+        $actual->setMessage('Hello');
 
-        $this->assertEquals('Hello', $actual->getContent());
+        $this->assertEquals('Hello', $actual->getMessage());
+    }
+
+    /** @test */
+    public function it_can_set_new_phone_number()
+    {
+        $actual = ClickatellMessage::create();
+
+        $this->assertEmpty($actual->getPhone());
+
+        $actual->setPhone(['03210123456789']);
+
+        $this->assertEquals(['03210123456789'], $actual->getPhone());
     }
 }

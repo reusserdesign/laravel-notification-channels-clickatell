@@ -42,34 +42,13 @@ Add your Clickatell user, password and api identifier  to your `config/services.
 // config/services.php
 ...
 'clickatell' => [
-    'user'  => env('CLICKATELL_USER'),
-    'pass' => env('CLICKATELL_PASS'),
-    'api_id' => env('CLICKATELL_API_ID'),
+  'api_key' => env('CLICKATELL_API_KEY'),
+  'api_id' => env('CLICKATELL_API_ID')
 ],
 ...
 ```
 
 ## Usage
-
-To route Clickatell notifications to the proper phone number, define a ```routeNotificationForClickatell```  method on your notifiable entity:
-
-```php
-class User extends Authenticatable
-{
-    use Notifiable;
-
-    /**
-     * Route notifications for the Nexmo channel.
-     *
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @return string
-     */
-    public function routeNotificationForClickatell($notification)
-    {
-        return $this->phone_number; 
-    }
-}
-```
 
 You can use the channel in your `via()` method inside the notification:
 
@@ -87,8 +66,32 @@ class AccountApproved extends Notification
 
     public function toClickatell($notifiable)
     {
-        return (new ClickatellMessage())
-            ->content("Your {$notifiable->service} account was approved!");
+        return ClickatellMessage::create()
+            ->setNumber("Phone_Number")
+            ->setMessage("Your {$notifiable->service} account was approved!");
+    }
+}
+```
+
+```php
+
+use Illuminate\Notifications\Notification;
+use NotificationChannels\Clickatell\ClickatellMessage;
+use NotificationChannels\Clickatell\ClickatellChannel;
+
+class AccountApproved extends Notification
+{
+    public function via($notifiable)
+    {
+        return [ClickatellChannel::class];
+    }
+
+    public function toClickatell($notifiable)
+    {
+        return ClickatellMessage::create(
+          "Phone_Number", 
+          "Your {$notifiable->service} account was approved!"
+        );
     }
 }
 ```

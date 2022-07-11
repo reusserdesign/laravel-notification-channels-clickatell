@@ -2,7 +2,6 @@
 
 namespace NotificationChannels\Clickatell;
 
-use Clickatell\Api\ClickatellHttp;
 use NotificationChannels\Clickatell\Exceptions\CouldNotSendNotification;
 use stdClass;
 
@@ -22,25 +21,25 @@ class ClickatellClient
     /**
      * @var ClickatellHttp
      */
-    private $clickatell;
+    public $clickatell;
 
     /**
      * @param ClickatellHttp $clickatellHttp
      */
-    public function __construct(ClickatellHttp $clickatellHttp)
+    public function __construct(string $apiKey)
     {
-        $this->clickatell = $clickatellHttp;
+        $this->clickatell = new ClickatellHttp($apiKey);
     }
 
     /**
-     * @param array $to String or Array of numbers
-     * @param string $message
+     * @param ClickatellMessage $message Clickatell Message object
      */
-    public function send(array $to, $message)
+    public function send(ClickatellMessage $message)
     {
-        $to = collect($to)->toArray();
+        $to = $message->getPhone();
+        $content = $message->getMessage();
 
-        $response = $this->clickatell->sendMessage($to, $message);
+        $response = $this->clickatell->sendMessage($to, $content);
 
         $this->handleProviderResponses($response);
     }

@@ -28,16 +28,8 @@ class ClickatellChannel
      */
     public function send($notifiable, Notification $notification)
     {
-        if (! $to = $notifiable->routeNotificationFor('clickatell')) {
-            return;
-        }
-
         $message = $notification->toClickatell($notifiable);
 
-        if (is_string($message)) {
-            $message = new ClickatellMessage($message);
-        }
-
-        $this->clickatell->send($to, $message->getContent());
+        $this->clickatell->send($message);
     }
 }

@@ -46,7 +46,7 @@ class ClickatellClient
 
     /**
      * @param  array  $responses
-     * 
+     *
      * @throws CouldNotSendNotification
      */
     protected function handleProviderResponses(array $responses)

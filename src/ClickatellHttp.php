@@ -34,7 +34,7 @@ class ClickatellHttp
     {
         $messages = [];
 
-        foreach($this->_phoneNumbers as $phoneNumber) {
+        foreach ($this->_phoneNumbers as $phoneNumber) {
             $messages[] += ['channel' => 'sms', 'to' => "$phoneNumber", 'content' => "$this->_message"];
             $messages[] += ['channel' => 'whatsapp', 'to' => "$phoneNumber", 'content' => "$this->_message"];
         }
@@ -54,7 +54,7 @@ class ClickatellHttp
             curl_setopt($this->_curl, CURLOPT_HTTPHEADER, [
                 'Content-Type: application/json',
                 'Accept: application/json',
-                'Authorization: '.$this->_apiKey
+                'Authorization: '.$this->_apiKey,
             ]);
         }
 
@@ -63,7 +63,7 @@ class ClickatellHttp
 
     private function _curl_send()
     {
-        curl_setopt($this->_curl, CURLOPT_POSTFIELDS, json_encode( $this->_requestBody()));
+        curl_setopt($this->_curl, CURLOPT_POSTFIELDS, json_encode($this->_requestBody()));
 
         $content = curl_exec($this->_curl);
         $response = curl_getinfo($this->_curl);

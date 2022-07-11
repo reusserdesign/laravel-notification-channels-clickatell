@@ -2,7 +2,6 @@
 
 namespace NotificationChannels\Clickatell\Test;
 
-use Clickatell\Api\ClickatellHttp;
 use NotificationChannels\Clickatell\ClickatellMessage;
 use PHPUnit\Framework\TestCase;
 

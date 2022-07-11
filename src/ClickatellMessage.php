@@ -15,7 +15,6 @@ class ClickatellMessage
     /**
      * @param  mixed  $phone
      * @param  string  $content
-     *
      * @return static
      */
     public static function create($phone = [], $content = '')
@@ -41,8 +40,7 @@ class ClickatellMessage
 
     /**
      * @param  string  $content
-     *
-     * @return  $this
+     * @return $this
      */
     public function setMessage(string $content): self
     {
@@ -61,8 +59,7 @@ class ClickatellMessage
 
     /**
      * @param  string  $phone
-     *
-     * @return  $this
+     * @return $this
      */
     public function setPhone(array $phone): self
     {

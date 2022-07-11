@@ -20,14 +20,14 @@ class ClickatellHttp
         $this->_curl_init();
     }
 
-    public function sendMessage(array $phoneNumbers, string $message): self
+    public function sendMessage(array $phoneNumbers, string $message): array
     {
         $this->_message = $message;
         $this->_phoneNumbers = $phoneNumbers;
 
-        $this->_curl_send();
+        $response = $this->_curl_send();
 
-        return $this;
+        return $response;
     }
 
     private function _requestBody(): array
@@ -61,16 +61,21 @@ class ClickatellHttp
         return $this->_curl;
     }
 
-    private function _curl_send()
+    private function _curl_send(): array
     {
-        curl_setopt($this->_curl, CURLOPT_POSTFIELDS, json_encode($this->_requestBody()));
+        $requestForMessages = $this->_requestBody();
 
-        $content = curl_exec($this->_curl);
-        $response = curl_getinfo($this->_curl);
+        curl_setopt($this->_curl, CURLOPT_POSTFIELDS, json_encode($requestForMessages));
+
+        $responseFromMessages = curl_exec($this->_curl);
+        $content = curl_getinfo($this->_curl);
 
         curl_close($this->_curl);
 
+        Log::debug($requestForMessages);
+        Log::debug($responseFromMessages);
         Log::debug($content);
-        Log::debug($response);
+
+        return $responseFromMessages ?? [];
     }
 }

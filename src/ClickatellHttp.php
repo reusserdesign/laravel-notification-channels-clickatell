@@ -67,7 +67,9 @@ class ClickatellHttp
 
         curl_setopt($this->_curl, CURLOPT_POSTFIELDS, json_encode($requestForMessages));
 
-        $responseFromMessages = curl_exec($this->_curl);
+        $rawResponse = curl_exec($this->_curl);
+        $responseFromMessages = ($rawResponse != false) ? json_decode($rawResponse) : [];
+
         $content = curl_getinfo($this->_curl);
 
         curl_close($this->_curl);
@@ -76,6 +78,6 @@ class ClickatellHttp
         Log::debug($responseFromMessages);
         Log::debug($content);
 
-        return $responseFromMessages ?? [];
+        return $responseFromMessages;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace NotificationChannels\Clickatell;
 
+use Illuminate\Support\Facades\Log;
 use NotificationChannels\Clickatell\Exceptions\CouldNotSendNotification;
 use stdClass;
 
@@ -9,6 +10,7 @@ class ClickatellClient
 {
     const SUCCESSFUL_SEND = 0;
     const AUTH_FAILED = 1;
+    const CHANNEL_NOT_ACTIVE = 38;
     const INVALID_DEST_ADDRESS = 105;
     const INVALID_API_ID = 108;
     const CANNOT_ROUTE_MESSAGE = 114;
@@ -51,15 +53,15 @@ class ClickatellClient
      */
     protected function handleProviderResponses(array $responses)
     {
-        collect($responses)->each(function (stdClass $response) {
-            $errorCode = (int) $response->errorCode;
+        $errorCode = (int) ($response['error']['code'] ?? self::SUCCESSFUL_SEND);
+        $errorDescription = (string) ($response['error']['description'] ?? '');
 
-            if ($errorCode != self::SUCCESSFUL_SEND) {
-                throw CouldNotSendNotification::serviceRespondedWithAnError(
-                    (string) $response->error,
-                    $errorCode
-                );
-            }
+        if ($errorCode != self::SUCCESSFUL_SEND) {
+            throw CouldNotSendNotification::serviceRespondedWithAnError($errorDescription, $errorCode);
+        }
+
+        collect($responses['messages'])->each(function (array $response) {
+            Log::debug($response);
         });
     }
 
